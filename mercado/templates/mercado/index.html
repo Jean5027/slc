@@ -1,0 +1,11 @@
+
+{% extends "flights/layout.html" %}
+
+{% block body %}
+    <h1>Listas:</h1>
+    <ul>
+        {% for produto in produtos %}
+            <li><a href="{% url 'produto' produto.id %}">Lista {{ produto.id }}</a>: {{ produto.origin }} to {{ produto.destination }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
