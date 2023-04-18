@@ -1,13 +1,20 @@
 from django.db import models
 
+class Lista(models.Model):
+    nome = models.CharField(max_length=100)
+    
+    def __str__(self) -> str:
+        return f"{self.id}: {self.nome}"
 
-class Mercado(models.Model):
-    code = models.CharField(max_length=3)
-    lista = models.CharField(max_length=64)
 
 class Produtos(models.Model):
-    code = models.CharField(max_length=3)
-    produto = models.CharField(max_length=64)
+    nome = models.CharField(max_length=100)
+    preco = models.FloatField()
+    lista = models.ManyToManyField(Lista, blank=True, related_name="produtos")
+
+    def __str__(self) -> str:
+        return f"{self.id}: {self.nome} | R${self.preco: .2f}"
+        
 
 class Usuario (models.Model):
     first = models.CharField(max_length=64)

@@ -1,12 +1,19 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.http import request
 from django.contrib.auth import authenticate, login, logout
+from . import models
 
 
 def index(request):
     # If no user is signed in, return to login page:
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
-    return render(request, "mercado/user.html")
+
+    listas = models.Lista.objects.all()
+
+    return render(request, "mercado/mercado.html", {
+        'listas': listas,
+    })
 
 
 
@@ -36,4 +43,26 @@ def login_view(request):
             return render(request, "mercado/login.html", {
                 "message": "Invalid Credentials"
             })
+        
     return render(request, "mercado/login.html")
+
+
+def cadastrar_lista(request):
+    if request.method == "POST":
+        nome = request.POST.get('lista')
+        lista = models.Lista.objects.create(nome=nome)
+        lista.save()
+        return HttpResponseRedirect(reverse('index'))
+
+    return HttpResponseRedirect(reverse('index'))
+
+
+def apaga_lista(request): # Ajeitar aqui
+    if request.method == "POST":
+        nome = int(request.POST.get('lista'))
+        lista = models.Lista.objects.get(id=nome)
+        lista.delete()
+
+        return HttpResponseRedirect(reverse('index'))
+    
+    return HttpResponseRedirect(reverse('index'))

@@ -5,8 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mercado</title>
+
 </head>
 <body>
+
+
+        {% block body %}
+            <h2>Criar Lista</h2>
+            <form action="{% url 'lista' %}" method="post">
+                {% csrf_token %}
+                <p><input type="text" name="lista" id="lista"></p>
+                <input type="submit" value="Criar Lista">
+            </form>
+
+            <h2>Visualizar Listas</h2>
+            <ul>
+                {% for lista in listas %}
+                    <li>{{ lista }}</li>
+                {% endfor %}
+            </ul>
+
+            <h2>Apagar Lista Por ID</h2>
+            <form action="{% url 'apaga_lista' %}" method="post">
+                {% csrf_token %}
+                <p><input type="text" name="lista" id="apaga_lista"></p>
+                <input type="submit" value="Apagar Lista">
+            </form>
+
+        {% endblock %}
+
     
 </body>
 </html>
